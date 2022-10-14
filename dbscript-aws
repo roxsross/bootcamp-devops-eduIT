@@ -1,0 +1,11 @@
+#!/bin/bash
+sudo yum update -y
+sudo amazon-linux-extras install epel -y
+sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y
+sudo yum install mysql-community-server -y
+sudo systemctl enable mysqld
+sudo systemctl start mysqld
+touch /home/ec2-user/pass.txt
+sudo cat /var/log/mysqld.log | grep "A temporary password" | awk '{print $13}' > /home/ec2-user/pass.txt
+pass=$(< pass.txt)
+sudo mysql -h localhost
